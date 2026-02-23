@@ -103,3 +103,30 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+/* Grid styles for Excel-like tables */
+.grid-th {
+  @apply px-2 py-2 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground border-b border-r last:border-r-0 select-none;
+}
+
+.grid-td {
+  @apply px-2 py-1 border-b border-r last:border-r-0 text-xs;
+}
+
+.grid-input {
+  @apply w-full h-full px-1.5 py-1 text-xs border-0 bg-transparent outline-none focus:ring-1 focus:ring-ring rounded-none;
+}
+
+.grid-input:disabled {
+  @apply cursor-not-allowed;
+}
+
+.grid-input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.grid-input[type="number"]::-webkit-inner-spin-button,
+.grid-input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
