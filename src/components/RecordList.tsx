@@ -1,4 +1,3 @@
-// src/components/RecordList.tsx
 import React from "react";
 
 const RecordList = () => {
@@ -6,7 +5,7 @@ const RecordList = () => {
     <div>
       <h2>Submitted Records</h2>
       <p>This is where submitted records by SKs will be displayed.</p>
-      {/* Add further functionality like fetching and displaying records here */}
+      {/* Future functionality to fetch and display records will go here */}
     </div>
   );
 };
