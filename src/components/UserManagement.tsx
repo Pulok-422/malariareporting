@@ -59,7 +59,7 @@ const UserManagement = () => {
 
   return (
     <div className="max-w-5xl mx-auto p-6 bg-white rounded-xl shadow-lg mt-12">
-      <h2 className="text-xl font-semibold text-gray-900 mb-6">Manage Users (SK)</h2>
+      <h2 className="text-2xl font-semibold text-gray-900 mb-6">Manage Users (SK)</h2>
 
       {/* Success/Error Messages */}
       {successMessage && (
