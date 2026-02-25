@@ -1,19 +1,15 @@
 import React, { useState } from "react";
 
-const UserManagement = () => {
+const UserManagement = ({ users, setUsers }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("sk");
-  const [users, setUsers] = useState([
-    { id: 1, name: "SK Rahim Uddin", email: "rahim@skmail.com", role: "sk" },
-    { id: 2, name: "SK Hasan Ali", email: "hasan@skmail.com", role: "sk" },
-  ]);
   const [editingUser, setEditingUser] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
   // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!name || !email) {
@@ -43,14 +39,14 @@ const UserManagement = () => {
   };
 
   // Handle deleting a user
-  const handleDelete = (id: number) => {
+  const handleDelete = (id) => {
     const updatedUsers = users.filter((user) => user.id !== id);
     setUsers(updatedUsers);
     setSuccessMessage("User deleted successfully!");
   };
 
   // Handle editing a user
-  const handleEdit = (user: { id: number; name: string; email: string; role: string }) => {
+  const handleEdit = (user) => {
     setName(user.name);
     setEmail(user.email);
     setRole(user.role);
