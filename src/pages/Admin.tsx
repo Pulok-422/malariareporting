@@ -4,15 +4,16 @@ import { ArrowLeft, UserPlus, AssignIcon, EditIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-// Placeholder components for user and village management
+// Import your components
 import UserManagement from "@/components/UserManagement"; // Example of user management component
-import VillageAssignment from "@/components/VillageAssignment"; // Example of village assignment component
+import VillageAssignment from "@/components/VillageAssignment"; // Village Assignment component
 import RecordList from "@/components/RecordList"; // Example of record list component
 
 const Admin = () => {
   const { role } = useAuth();
   const navigate = useNavigate();
 
+  // Check if the user has the "admin" role
   if (role !== "admin") {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -21,12 +22,13 @@ const Admin = () => {
     );
   }
 
-  // Placeholder state for tracking which section is active
+  // Track which section is active
   const [activeSection, setActiveSection] = useState<string>("records");
 
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b bg-card px-6 py-4 flex items-center justify-between">
+        {/* Back Button */}
         <Button variant="ghost" size="sm" onClick={() => navigate("/")}>
           <ArrowLeft className="h-5 w-5 mr-2" /> Back
         </Button>
@@ -69,6 +71,7 @@ const Admin = () => {
       </header>
 
       <main className="p-6">
+        {/* View Submitted Records Section */}
         {activeSection === "records" && (
           <div>
             <h2 className="text-xl font-medium mb-4">Submitted Records</h2>
@@ -76,13 +79,15 @@ const Admin = () => {
           </div>
         )}
 
+        {/* Assign New Village Section */}
         {activeSection === "assignments" && (
           <div>
             <h2 className="text-xl font-medium mb-4">Assign New Village</h2>
-            <VillageAssignment /> {/* Component for assigning new villages */}
+            <VillageAssignment /> {/* Component for assigning new villages to SKs */}
           </div>
         )}
 
+        {/* User Management Section */}
         {activeSection === "users" && (
           <div>
             <h2 className="text-xl font-medium mb-4">User Management</h2>
@@ -90,6 +95,7 @@ const Admin = () => {
           </div>
         )}
 
+        {/* Master Data Section */}
         {activeSection === "masterData" && (
           <div>
             <h2 className="text-xl font-medium mb-4">Manage Master Data</h2>
