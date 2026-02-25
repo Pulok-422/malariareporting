@@ -1,8 +1,10 @@
-import React from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Shield, LogOut } from "lucide-react"; // Assuming you have these icons
-import { useAuth } from "@/contexts/AuthContext"; // Assuming you're using useAuth for authentication
-import { useNavigate } from "react-router-dom"; // Assuming you're using this for routing
+import LocalRecordsGrid from "@/components/LocalRecordsGrid";
+import NonLocalRecordsGrid from "@/components/NonLocalRecordsGrid";
+import { LogOut, Shield } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const { profile, role, signOut } = useAuth();
@@ -10,50 +12,70 @@ const Dashboard = () => {
   const isAdmin = role === "admin";
 
   return (
-    <header className="sticky top-0 z-10 border-b bg-gradient-to-r from-blue-600 to-blue-400 text-white shadow-lg px-6 py-4 flex items-center justify-between">
-      {/* Title Section */}
-      <div className="flex items-center gap-4">
-        <h1 className="text-2xl font-bold tracking-tight">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-white via-white to-muted/30">
+      {/* Header */}
+      <header className="sticky top-0 z-10 border-b bg-white/70 backdrop-blur-xl px-4 py-3 flex items-center justify-between shrink-0">
+        <h1 className="text-lg font-semibold tracking-tight">
           Malaria Annual Reporting
         </h1>
-      </div>
 
-      {/* User Info and Actions */}
-      <div className="flex items-center gap-4">
-        {/* Admin Button */}
-        {isAdmin && (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => navigate("/admin")}
-            className="bg-white text-blue-600 hover:bg-blue-50"
-          >
-            <Shield className="h-4 w-4 mr-2" /> Admin
-          </Button>
-        )}
+        <div className="flex items-center gap-3">
+          {isAdmin && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => navigate("/admin")}
+              className="bg-white/60"
+            >
+              <Shield className="h-4 w-4 mr-1" /> Admin
+            </Button>
+          )}
 
-        {/* User Profile */}
-        <div className="flex items-center gap-2">
-          <span className="text-sm">{profile?.full_name || profile?.email}</span>
-          <span className="inline-flex items-center px-3 py-1 rounded-full bg-blue-500 text-white text-xs font-semibold uppercase">
-            {role}
+          <span className="text-sm text-muted-foreground">
+            {profile?.full_name || profile?.email}
+            <span className="inline-flex items-center ml-2 px-2 py-0.5 rounded-md text-[10px] font-semibold uppercase border border-primary/20 bg-primary/10 text-primary">
+              {role}
+            </span>
           </span>
-        </div>
 
-        {/* Logout Button */}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={signOut}
-          className="gap-2 text-white hover:bg-blue-700 rounded-md"
-        >
-          <LogOut className="h-4 w-4" />
-          <span className="hidden sm:inline">Logout</span>
-        </Button>
-      </div>
-    </header>
+          <Button variant="ghost" size="sm" onClick={signOut} className="gap-2">
+            <LogOut className="h-4 w-4" />
+            <span className="hidden sm:inline">Logout</span>
+          </Button>
+        </div>
+      </header>
+
+      {/* Content */}
+      <main className="flex-1 p-4 overflow-hidden">
+        <div className="mx-auto w-full max-w-7xl h-full">
+          <Tabs defaultValue="local" className="h-full flex flex-col">
+            <TabsList className="mb-3 w-fit rounded-lg bg-muted/60 p-1">
+              <TabsTrigger
+                value="local"
+                className="data-[state=active]:bg-white data-[state=active]:shadow-sm"
+              >
+                Local
+              </TabsTrigger>
+              <TabsTrigger
+                value="non-local"
+                className="data-[state=active]:bg-white data-[state=active]:shadow-sm"
+              >
+                Non-Local
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="local" className="flex-1 overflow-hidden">
+              <LocalRecordsGrid />
+            </TabsContent>
+
+            <TabsContent value="non-local" className="flex-1 overflow-hidden">
+              <NonLocalRecordsGrid />
+            </TabsContent>
+          </Tabs>
+        </div>
+      </main>
+    </div>
   );
 };
 
-// Export the component as default
 export default Dashboard;
