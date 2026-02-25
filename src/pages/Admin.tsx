@@ -5,15 +5,15 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 // Import your components
-import UserManagement from "@/components/UserManagement"; // Example of user management component
-import VillageAssignment from "@/components/VillageAssignment"; // Village Assignment component
-import RecordList from "@/components/RecordList"; // Example of record list component
+import UserManagement from "@/components/UserManagement"; // User Management Component
+import VillageAssignment from "@/components/VillageAssignment"; // Village Assignment Component
+import RecordList from "@/components/RecordList"; // Record List Component
 
 const Admin = () => {
   const { role } = useAuth();
   const navigate = useNavigate();
 
-  // Check if the user has the "admin" role
+  // Check if the user has admin role
   if (role !== "admin") {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -83,7 +83,7 @@ const Admin = () => {
         {activeSection === "assignments" && (
           <div>
             <h2 className="text-xl font-medium mb-4">Assign New Village</h2>
-            <VillageAssignment /> {/* Component for assigning new villages to SKs */}
+            <VillageAssignment /> {/* Component for assigning new villages */}
           </div>
         )}
 
@@ -99,7 +99,6 @@ const Admin = () => {
         {activeSection === "masterData" && (
           <div>
             <h2 className="text-xl font-medium mb-4">Manage Master Data</h2>
-            {/* This section could contain forms for adding or editing village or other master data */}
             <p className="text-muted-foreground">Add or update master data here (e.g., villages, regions).</p>
           </div>
         )}
