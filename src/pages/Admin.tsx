@@ -17,7 +17,7 @@ const Admin = () => {
   if (role !== "admin") {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <p className="text-destructive">Access denied</p>
+        <p className="text-destructive text-lg">Access Denied</p>
       </div>
     );
   }
@@ -26,20 +26,21 @@ const Admin = () => {
   const [activeSection, setActiveSection] = useState<string>("records");
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b bg-card px-6 py-4 flex items-center justify-between">
+    <div className="min-h-screen bg-gradient-to-r from-white via-white to-gray-100">
+      {/* Header Section */}
+      <header className="border-b bg-card px-6 py-4 flex items-center justify-between shadow-md">
         {/* Back Button */}
         <Button variant="ghost" size="sm" onClick={() => navigate("/")}>
           <ArrowLeft className="h-5 w-5 mr-2" /> Back
         </Button>
-        <h1 className="text-2xl font-semibold">Admin Panel</h1>
+        <h1 className="text-2xl font-semibold text-gray-900">Admin Panel</h1>
         <div className="flex items-center gap-3">
           {/* Admin Section Navigation */}
           <Button
             variant="outline"
             size="sm"
             onClick={() => setActiveSection("records")}
-            className="hover:bg-blue-100"
+            className="hover:bg-blue-100 hover:text-blue-700 transition duration-200"
           >
             <FileText className="h-5 w-5 mr-2" /> View Records
           </Button>
@@ -47,15 +48,15 @@ const Admin = () => {
             variant="outline"
             size="sm"
             onClick={() => setActiveSection("assignments")}
-            className="hover:bg-blue-100"
+            className="hover:bg-blue-100 hover:text-blue-700 transition duration-200"
           >
-            <FileText className="h-5 w-5 mr-2" /> Assign Villages {/* Adjusted to FileText as an example */}
+            <FileText className="h-5 w-5 mr-2" /> Assign Villages
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => setActiveSection("users")}
-            className="hover:bg-blue-100"
+            className="hover:bg-blue-100 hover:text-blue-700 transition duration-200"
           >
             <UserPlus className="h-5 w-5 mr-2" /> Manage Users
           </Button>
@@ -63,18 +64,19 @@ const Admin = () => {
             variant="outline"
             size="sm"
             onClick={() => setActiveSection("masterData")}
-            className="hover:bg-blue-100"
+            className="hover:bg-blue-100 hover:text-blue-700 transition duration-200"
           >
             <EditIcon className="h-5 w-5 mr-2" /> Master Data
           </Button>
         </div>
       </header>
 
-      <main className="p-6">
+      {/* Main Content */}
+      <main className="p-6 space-y-8">
         {/* View Submitted Records Section */}
         {activeSection === "records" && (
           <div>
-            <h2 className="text-xl font-medium mb-4">Submitted Records</h2>
+            <h2 className="text-xl font-medium mb-4 text-gray-800">Submitted Records</h2>
             <RecordList /> {/* Component for viewing submitted records by SKs */}
           </div>
         )}
@@ -82,7 +84,7 @@ const Admin = () => {
         {/* Assign New Village Section */}
         {activeSection === "assignments" && (
           <div>
-            <h2 className="text-xl font-medium mb-4">Assign New Village</h2>
+            <h2 className="text-xl font-medium mb-4 text-gray-800">Assign New Village</h2>
             <VillageAssignment /> {/* Component for assigning new villages */}
           </div>
         )}
@@ -90,7 +92,7 @@ const Admin = () => {
         {/* User Management Section */}
         {activeSection === "users" && (
           <div>
-            <h2 className="text-xl font-medium mb-4">User Management</h2>
+            <h2 className="text-xl font-medium mb-4 text-gray-800">User Management</h2>
             <UserManagement /> {/* Component for creating or managing users */}
           </div>
         )}
@@ -98,8 +100,8 @@ const Admin = () => {
         {/* Master Data Section */}
         {activeSection === "masterData" && (
           <div>
-            <h2 className="text-xl font-medium mb-4">Manage Master Data</h2>
-            <p className="text-muted-foreground">Add or update master data here (e.g., villages, regions).</p>
+            <h2 className="text-xl font-medium mb-4 text-gray-800">Manage Master Data</h2>
+            <p className="text-sm text-gray-500">Add or update master data here (e.g., villages, regions).</p>
           </div>
         )}
       </main>
