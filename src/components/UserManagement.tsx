@@ -1,146 +1,208 @@
-// src/components/UserManagement.tsx
 import React, { useState } from "react";
 
-const UserManagement = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [role, setRole] = useState("user");
-  const [users, setUsers] = useState([
-    { id: 1, name: "John Doe", email: "john@example.com", role: "admin" },
-    { id: 2, name: "Jane Smith", email: "jane@example.com", role: "user" },
-  ]);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+const LocalCaseReportForm = () => {
+  const [union, setUnion] = useState("");
+  const [village, setVillage] = useState("");
+  const [wardNo, setWardNo] = useState("");
+  const [hh, setHh] = useState(0);
+  const [itn2023, setItn2023] = useState(0);
+  const [itn2024, setItn2024] = useState(0);
+  const [itn2025, setItn2025] = useState(0);
+  const [population, setPopulation] = useState(0);
+  const [reportMonth, setReportMonth] = useState("Feb");
+  const [cases, setCases] = useState(0);
 
-  // Handle form submission
+  // Handling form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!name || !email) {
-      setErrorMessage("Please fill in all fields.");
-      setSuccessMessage("");
-      return;
-    }
-
-    const newUser = { id: Date.now(), name, email, role };
-    setUsers([...users, newUser]);
-    setName("");
-    setEmail("");
-    setRole("user");
-    setSuccessMessage("User created successfully!");
-    setErrorMessage("");
-  };
-
-  // Handle deleting a user
-  const handleDelete = (id: number) => {
-    setUsers(users.filter((user) => user.id !== id));
-    setSuccessMessage("User deleted successfully!");
-    setErrorMessage("");
+    alert("Form Submitted!");
+    // Add functionality to save the data here (e.g., API call)
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6">
-      <h2 className="text-3xl font-semibold mb-6 text-gray-900">Manage Users</h2>
+    <div className="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-lg mt-12">
+      <h2 className="text-xl font-semibold text-gray-900 mb-6">Local Case Report</h2>
 
-      {/* Success/Error Messages */}
-      {successMessage && (
-        <div className="bg-green-100 text-green-700 p-4 mb-6 rounded-md shadow-md">
-          {successMessage}
-        </div>
-      )}
-      {errorMessage && (
-        <div className="bg-red-100 text-red-700 p-4 mb-6 rounded-md shadow-md">
-          {errorMessage}
-        </div>
-      )}
-
-      {/* User Creation Form */}
-      <form onSubmit={handleSubmit} className="mb-8 bg-white p-6 rounded-lg shadow-md">
-        <div className="space-y-4">
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-              Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              className="mt-2 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="mt-2 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="role" className="block text-sm font-medium text-gray-700">
-              Role
+      <form onSubmit={handleSubmit} className="space-y-6 text-sm">
+        {/* Union & Village */}
+        <div className="grid grid-cols-2 gap-6">
+          <div className="col-span-1">
+            <label htmlFor="union" className="block text-xs font-medium text-gray-700">
+              Select Union
             </label>
             <select
-              id="role"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-              className="mt-2 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              id="union"
+              value={union}
+              onChange={(e) => setUnion(e.target.value)}
+              className="mt-2 w-full p-2 border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-xs"
             >
-              <option value="user">User</option>
-              <option value="admin">Admin</option>
+              <option value="">Select Union</option>
+              <option value="Union1">Union 1</option>
+              <option value="Union2">Union 2</option>
+            </select>
+          </div>
+
+          <div className="col-span-1">
+            <label htmlFor="village" className="block text-xs font-medium text-gray-700">
+              Select Village
+            </label>
+            <select
+              id="village"
+              value={village}
+              onChange={(e) => setVillage(e.target.value)}
+              className="mt-2 w-full p-2 border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-xs"
+            >
+              <option value="">Select Village</option>
+              <option value="Village1">Village 1</option>
+              <option value="Village2">Village 2</option>
             </select>
           </div>
         </div>
 
-        <button
-          type="submit"
-          className="mt-6 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition duration-200"
-        >
-          Create User
-        </button>
-      </form>
+        {/* Ward No, HH, and Population */}
+        <div className="grid grid-cols-3 gap-6">
+          <div className="col-span-1">
+            <label htmlFor="wardNo" className="block text-xs font-medium text-gray-700">
+              Ward No
+            </label>
+            <input
+              type="text"
+              id="wardNo"
+              value={wardNo}
+              onChange={(e) => setWardNo(e.target.value)}
+              className="mt-2 w-full p-2 border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-xs"
+            />
+          </div>
 
-      {/* User List Table */}
-      <div className="overflow-x-auto bg-white shadow-md rounded-lg">
-        <table className="min-w-full table-auto">
-          <thead>
-            <tr>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Name</th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Email</th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Role</th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td className="px-6 py-4 text-sm text-gray-700">{user.name}</td>
-                <td className="px-6 py-4 text-sm text-gray-700">{user.email}</td>
-                <td className="px-6 py-4 text-sm text-gray-700">{user.role}</td>
-                <td className="px-6 py-4 text-sm text-gray-700">
-                  <button
-                    onClick={() => handleDelete(user.id)}
-                    className="text-red-600 hover:text-red-800 transition duration-200"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          <div className="col-span-1">
+            <label htmlFor="hh" className="block text-xs font-medium text-gray-700">
+              H/H
+            </label>
+            <input
+              type="number"
+              id="hh"
+              value={hh}
+              onChange={(e) => setHh(Number(e.target.value))}
+              className="mt-2 w-full p-2 border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-xs"
+            />
+          </div>
+
+          <div className="col-span-1">
+            <label htmlFor="population" className="block text-xs font-medium text-gray-700">
+              Population
+            </label>
+            <input
+              type="number"
+              id="population"
+              value={population}
+              onChange={(e) => setPopulation(Number(e.target.value))}
+              className="mt-2 w-full p-2 border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-xs"
+            />
+          </div>
+        </div>
+
+        {/* ITN Inputs */}
+        <div className="grid grid-cols-3 gap-6">
+          <div className="col-span-1">
+            <label htmlFor="itn2023" className="block text-xs font-medium text-gray-700">
+              ITN 2023
+            </label>
+            <input
+              type="number"
+              id="itn2023"
+              value={itn2023}
+              onChange={(e) => setItn2023(Number(e.target.value))}
+              className="mt-2 w-full p-2 border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-xs"
+            />
+          </div>
+
+          <div className="col-span-1">
+            <label htmlFor="itn2024" className="block text-xs font-medium text-gray-700">
+              ITN 2024
+            </label>
+            <input
+              type="number"
+              id="itn2024"
+              value={itn2024}
+              onChange={(e) => setItn2024(Number(e.target.value))}
+              className="mt-2 w-full p-2 border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-xs"
+            />
+          </div>
+
+          <div className="col-span-1">
+            <label htmlFor="itn2025" className="block text-xs font-medium text-gray-700">
+              ITN 2025
+            </label>
+            <input
+              type="number"
+              id="itn2025"
+              value={itn2025}
+              onChange={(e) => setItn2025(Number(e.target.value))}
+              className="mt-2 w-full p-2 border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-xs"
+            />
+          </div>
+        </div>
+
+        {/* Total Active ITNs */}
+        <div className="mt-4">
+          <p className="text-xs font-medium text-gray-700">
+            Total Active ITNs:{" "}
+            <span className="font-semibold text-green-600">
+              {itn2023 + itn2024 + itn2025}
+            </span>
+          </p>
+        </div>
+
+        {/* Reporting Month and Cases */}
+        <div className="grid grid-cols-2 gap-6">
+          <div className="col-span-1">
+            <label htmlFor="reportMonth" className="block text-xs font-medium text-gray-700">
+              Reporting Month
+            </label>
+            <select
+              id="reportMonth"
+              value={reportMonth}
+              onChange={(e) => setReportMonth(e.target.value)}
+              className="mt-2 w-full p-2 border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-xs"
+            >
+              <option value="Feb">Feb</option>
+              <option value="Mar">Mar</option>
+              <option value="Apr">Apr</option>
+            </select>
+          </div>
+
+          <div className="col-span-1">
+            <label htmlFor="cases" className="block text-xs font-medium text-gray-700">
+              Cases ({reportMonth})
+            </label>
+            <input
+              type="number"
+              id="cases"
+              value={cases}
+              onChange={(e) => setCases(Number(e.target.value))}
+              className="mt-2 w-full p-2 border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-xs"
+            />
+          </div>
+        </div>
+
+        {/* Submit Button */}
+        <div className="flex justify-between items-center mt-6">
+          <button
+            type="button"
+            className="px-6 py-3 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 text-xs"
+          >
+            Save Draft
+          </button>
+          <button
+            type="submit"
+            className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 text-xs"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
 
-export default UserManagement;
+export default LocalCaseReportForm;
