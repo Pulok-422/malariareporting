@@ -8,7 +8,6 @@ const UserManagement = () => {
     { id: 1, name: "SK Rahim Uddin", email: "rahim@skmail.com", role: "sk" },
     { id: 2, name: "SK Hasan Ali", email: "hasan@skmail.com", role: "sk" },
   ]);
-
   const [editingUser, setEditingUser] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -59,26 +58,26 @@ const UserManagement = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6 bg-white rounded-xl shadow-lg mt-12">
-      <h2 className="text-2xl font-semibold text-gray-900 mb-6">Manage Users (SK)</h2>
+    <div className="max-w-5xl mx-auto p-6 bg-white rounded-xl shadow-lg mt-12">
+      <h2 className="text-xl font-semibold text-gray-900 mb-6">Manage Users (SK)</h2>
 
       {/* Success/Error Messages */}
       {successMessage && (
-        <div className="bg-green-100 text-green-700 p-4 mb-6 rounded-md shadow-md">
+        <div className="bg-green-100 text-green-700 p-4 mb-6 rounded-md shadow-md text-xs">
           {successMessage}
         </div>
       )}
       {errorMessage && (
-        <div className="bg-red-100 text-red-700 p-4 mb-6 rounded-md shadow-md">
+        <div className="bg-red-100 text-red-700 p-4 mb-6 rounded-md shadow-md text-xs">
           {errorMessage}
         </div>
       )}
 
       {/* User Creation/Edit Form */}
-      <form onSubmit={handleSubmit} className="mb-8 bg-white p-6 rounded-lg shadow-md">
+      <form onSubmit={handleSubmit} className="mb-8 bg-white p-6 rounded-lg shadow-md space-y-4">
         <div className="space-y-4">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="name" className="block text-xs font-medium text-gray-700">
               Name
             </label>
             <input
@@ -87,11 +86,11 @@ const UserManagement = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className="mt-2 block w-full p-3 border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-2 w-full p-2 border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-xs"
             />
           </div>
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="email" className="block text-xs font-medium text-gray-700">
               Email
             </label>
             <input
@@ -100,18 +99,18 @@ const UserManagement = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="mt-2 block w-full p-3 border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-2 w-full p-2 border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-xs"
             />
           </div>
           <div>
-            <label htmlFor="role" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="role" className="block text-xs font-medium text-gray-700">
               Role
             </label>
             <select
               id="role"
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="mt-2 block w-full p-3 border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-2 w-full p-2 border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-xs"
             >
               <option value="sk">SK</option>
               <option value="admin">Admin</option>
@@ -121,7 +120,7 @@ const UserManagement = () => {
 
         <button
           type="submit"
-          className="mt-6 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition duration-200"
+          className="mt-6 px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition duration-200 text-xs"
         >
           {editingUser ? "Update User" : "Create User"}
         </button>
@@ -132,19 +131,19 @@ const UserManagement = () => {
         <table className="min-w-full table-auto">
           <thead>
             <tr>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Name</th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Email</th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Role</th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Actions</th>
+              <th className="px-4 py-2 text-xs font-medium text-gray-500">Name</th>
+              <th className="px-4 py-2 text-xs font-medium text-gray-500">Email</th>
+              <th className="px-4 py-2 text-xs font-medium text-gray-500">Role</th>
+              <th className="px-4 py-2 text-xs font-medium text-gray-500">Actions</th>
             </tr>
           </thead>
           <tbody>
             {users.map((user) => (
               <tr key={user.id}>
-                <td className="px-6 py-4 text-sm text-gray-700">{user.name}</td>
-                <td className="px-6 py-4 text-sm text-gray-700">{user.email}</td>
-                <td className="px-6 py-4 text-sm text-gray-700">{user.role}</td>
-                <td className="px-6 py-4 text-sm text-gray-700">
+                <td className="px-4 py-2 text-xs text-gray-700">{user.name}</td>
+                <td className="px-4 py-2 text-xs text-gray-700">{user.email}</td>
+                <td className="px-4 py-2 text-xs text-gray-700">{user.role}</td>
+                <td className="px-4 py-2 text-xs text-gray-700">
                   <button
                     onClick={() => handleEdit(user)}
                     className="text-blue-600 hover:text-blue-800 mr-4 transition duration-200"
