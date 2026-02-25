@@ -1,23 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const VillageAssignment = () => {
+  const [selectedDistrict, setSelectedDistrict] = useState("");
+  const [selectedUpazila, setSelectedUpazila] = useState("");
+  const [selectedUnion, setSelectedUnion] = useState("");
   const [selectedVillage, setSelectedVillage] = useState("");
+  const [selectedWard, setSelectedWard] = useState("");
   const [skId, setSkId] = useState("");
 
-  // Placeholder village data (replace with actual data from your backend or state)
+  // Placeholder data
+  const districts = ["District 1", "District 2", "District 3"];
+  const upazilas = ["Upazila 1", "Upazila 2", "Upazila 3"];
+  const unions = ["Union 1", "Union 2", "Union 3"];
   const villages = ["Village 1", "Village 2", "Village 3"];
+  const wards = ["Ward 1", "Ward 2", "Ward 3"];
   const sks = ["SK1", "SK2", "SK3"];
 
   const handleSubmit = () => {
-    // Placeholder submission logic
-    alert(`Assigned ${selectedVillage} to ${skId}`);
+    alert(
+      `Assigned SK ${skId} to Village: ${selectedVillage}, Ward: ${selectedWard}, Union: ${selectedUnion}, Upazila: ${selectedUpazila}, District: ${selectedDistrict}`
+    );
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-md mt-12">
-      <h2 className="text-xl font-semibold text-gray-900 mb-4">Assign Village to SK</h2>
+    <div className="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-lg mt-12">
+      <h2 className="text-xl font-semibold text-gray-900 mb-6">Assign Village to SK</h2>
 
-      <div className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {/* SK Selection */}
         <div className="mb-4">
           <label htmlFor="skId" className="block text-xs font-medium text-gray-700">
@@ -38,21 +47,104 @@ const VillageAssignment = () => {
           </select>
         </div>
 
-        {/* Village Selection */}
+        {/* District Selection */}
+        <div className="grid grid-cols-2 gap-6">
+          <div>
+            <label htmlFor="district" className="block text-xs font-medium text-gray-700">
+              Select District:
+            </label>
+            <select
+              id="district"
+              value={selectedDistrict}
+              onChange={(e) => setSelectedDistrict(e.target.value)}
+              className="mt-1 block w-full p-3 border rounded-md text-xs focus:ring-indigo-500 focus:border-indigo-500"
+            >
+              <option value="">Select District</option>
+              {districts.map((district) => (
+                <option key={district} value={district}>
+                  {district}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Upazila Selection */}
+          <div>
+            <label htmlFor="upazila" className="block text-xs font-medium text-gray-700">
+              Select Upazila:
+            </label>
+            <select
+              id="upazila"
+              value={selectedUpazila}
+              onChange={(e) => setSelectedUpazila(e.target.value)}
+              className="mt-1 block w-full p-3 border rounded-md text-xs focus:ring-indigo-500 focus:border-indigo-500"
+            >
+              <option value="">Select Upazila</option>
+              {upazilas.map((upazila) => (
+                <option key={upazila} value={upazila}>
+                  {upazila}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* Union and Village Selection */}
+        <div className="grid grid-cols-2 gap-6">
+          <div>
+            <label htmlFor="union" className="block text-xs font-medium text-gray-700">
+              Select Union:
+            </label>
+            <select
+              id="union"
+              value={selectedUnion}
+              onChange={(e) => setSelectedUnion(e.target.value)}
+              className="mt-1 block w-full p-3 border rounded-md text-xs focus:ring-indigo-500 focus:border-indigo-500"
+            >
+              <option value="">Select Union</option>
+              {unions.map((union) => (
+                <option key={union} value={union}>
+                  {union}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="village" className="block text-xs font-medium text-gray-700">
+              Select Village:
+            </label>
+            <select
+              id="village"
+              value={selectedVillage}
+              onChange={(e) => setSelectedVillage(e.target.value)}
+              className="mt-1 block w-full p-3 border rounded-md text-xs focus:ring-indigo-500 focus:border-indigo-500"
+            >
+              <option value="">Select Village</option>
+              {villages.map((village) => (
+                <option key={village} value={village}>
+                  {village}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* Ward Selection */}
         <div className="mb-4">
-          <label htmlFor="village" className="block text-xs font-medium text-gray-700">
-            Select Village:
+          <label htmlFor="ward" className="block text-xs font-medium text-gray-700">
+            Select Ward:
           </label>
           <select
-            id="village"
-            value={selectedVillage}
-            onChange={(e) => setSelectedVillage(e.target.value)}
+            id="ward"
+            value={selectedWard}
+            onChange={(e) => setSelectedWard(e.target.value)}
             className="mt-1 block w-full p-3 border rounded-md text-xs focus:ring-indigo-500 focus:border-indigo-500"
           >
-            <option value="">Select Village</option>
-            {villages.map((village) => (
-              <option key={village} value={village}>
-                {village}
+            <option value="">Select Ward</option>
+            {wards.map((ward) => (
+              <option key={ward} value={ward}>
+                {ward}
               </option>
             ))}
           </select>
@@ -61,13 +153,13 @@ const VillageAssignment = () => {
         {/* Submit Button */}
         <div className="flex justify-start mt-6">
           <button
-            onClick={handleSubmit}
+            type="submit"
             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-xs transition duration-200"
           >
             Assign
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };
