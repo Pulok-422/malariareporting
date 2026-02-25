@@ -22,6 +22,14 @@ const Admin = () => {
     );
   }
 
+  // State to manage users
+  const [users, setUsers] = useState([
+    { id: 1, name: "SK Rahim Uddin", email: "rahim@skmail.com", role: "sk" },
+    { id: 2, name: "SK Hasan Ali", email: "hasan@skmail.com", role: "sk" },
+    { id: 3, name: "SK Mizanur Rahman", email: "mizan@skmail.com", role: "sk" },
+    // other users can be added dynamically from UserManagement
+  ]);
+
   // Track which section is active
   const [activeSection, setActiveSection] = useState<string>("records");
 
@@ -85,7 +93,7 @@ const Admin = () => {
         {activeSection === "assignments" && (
           <div>
             <h2 className="text-xl font-medium mb-4 text-gray-800">Assign New Village</h2>
-            <VillageAssignment /> {/* Component for assigning new villages */}
+            <VillageAssignment users={users} setUsers={setUsers} /> {/* Pass users and setUsers as props */}
           </div>
         )}
 
@@ -93,7 +101,7 @@ const Admin = () => {
         {activeSection === "users" && (
           <div>
             <h2 className="text-xl font-medium mb-4 text-gray-800">User Management</h2>
-            <UserManagement /> {/* Component for creating or managing users */}
+            <UserManagement users={users} setUsers={setUsers} /> {/* Pass users and setUsers as props */}
           </div>
         )}
 
