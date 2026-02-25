@@ -41,7 +41,7 @@ const Admin = () => {
             onClick={() => setActiveSection("records")}
             className="hover:bg-blue-100"
           >
-            <RecordList className="h-5 w-5 mr-2" /> View Records
+            <span className="mr-2">📋</span> View Records
           </Button>
           <Button
             variant="outline"
