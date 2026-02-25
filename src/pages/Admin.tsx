@@ -1,8 +1,8 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, UserPlus, AssignIcon, EditIcon } from "lucide-react";
+import { ArrowLeft, UserPlus, EditIcon, FileText } from "lucide-react"; // Replaced AssignIcon with FileText
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 // Import your components
 import UserManagement from "@/components/UserManagement"; // User Management Component
@@ -41,7 +41,7 @@ const Admin = () => {
             onClick={() => setActiveSection("records")}
             className="hover:bg-blue-100"
           >
-            <span className="mr-2">📋</span> View Records
+            <FileText className="h-5 w-5 mr-2" /> View Records
           </Button>
           <Button
             variant="outline"
@@ -49,7 +49,7 @@ const Admin = () => {
             onClick={() => setActiveSection("assignments")}
             className="hover:bg-blue-100"
           >
-            <AssignIcon className="h-5 w-5 mr-2" /> Assign Villages
+            <FileText className="h-5 w-5 mr-2" /> Assign Villages {/* Adjusted to FileText as an example */}
           </Button>
           <Button
             variant="outline"
