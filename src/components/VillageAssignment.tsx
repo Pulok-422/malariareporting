@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const VillageAssignment = () => {
+// Assuming users are passed as a prop
+const VillageAssignment = ({ users }) => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedUpazila, setSelectedUpazila] = useState("");
   const [selectedUnion, setSelectedUnion] = useState("");
@@ -8,15 +9,18 @@ const VillageAssignment = () => {
   const [selectedWard, setSelectedWard] = useState("");
   const [skId, setSkId] = useState("");
 
-  // Placeholder data
+  // Get SKs from users
+  const sks = users.filter(user => user.role === "sk").map(user => user.name);
+
+  // Placeholder data for districts, upazilas, unions, villages, and wards
   const districts = ["District 1", "District 2", "District 3"];
   const upazilas = ["Upazila 1", "Upazila 2", "Upazila 3"];
   const unions = ["Union 1", "Union 2", "Union 3"];
   const villages = ["Village 1", "Village 2", "Village 3"];
   const wards = ["Ward 1", "Ward 2", "Ward 3"];
-  const sks = ["SK1", "SK2", "SK3"];
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     alert(
       `Assigned SK ${skId} to Village: ${selectedVillage}, Ward: ${selectedWard}, Union: ${selectedUnion}, Upazila: ${selectedUpazila}, District: ${selectedDistrict}`
     );
@@ -47,7 +51,7 @@ const VillageAssignment = () => {
           </select>
         </div>
 
-        {/* District Selection */}
+        {/* District and Upazila Selection */}
         <div className="grid grid-cols-2 gap-6">
           <div>
             <label htmlFor="district" className="block text-xs font-medium text-gray-700">
@@ -68,7 +72,6 @@ const VillageAssignment = () => {
             </select>
           </div>
 
-          {/* Upazila Selection */}
           <div>
             <label htmlFor="upazila" className="block text-xs font-medium text-gray-700">
               Select Upazila:
