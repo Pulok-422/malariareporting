@@ -2,12 +2,12 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, UserPlus, EditIcon, FileText, MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 // Import your components
 import UserManagement from "@/components/UserManagement";
 import VillageAssignment from "@/components/VillageAssignment";
-import RecordList from "@/components/RecordList";
+import AdminRecordReview from "@/components/AdminRecordReview"; // ✅ new
 
 type SectionKey = "records" | "assignments" | "users" | "masterData";
 
@@ -15,7 +15,6 @@ const Admin = () => {
   const { role } = useAuth();
   const navigate = useNavigate();
 
-  // Check if the user has admin role
   if (role !== "admin") {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -24,17 +23,15 @@ const Admin = () => {
     );
   }
 
-  // State to manage users
   const [users, setUsers] = useState([
     { id: 1, name: "SK Rahim Uddin", email: "rahim@skmail.com", role: "sk" },
     { id: 2, name: "SK Hasan Ali", email: "hasan@skmail.com", role: "sk" },
     { id: 3, name: "SK Mizanur Rahman", email: "mizan@skmail.com", role: "sk" },
   ]);
 
-  // Track which section is active
   const [activeSection, setActiveSection] = useState<SectionKey>("records");
 
-  // Compact premium button styles (neutral, professional)
+  // Premium compact button styles (neutral, professional)
   const navBtnBase =
     "h-8 px-3 rounded-md border text-xs font-medium " +
     "inline-flex items-center justify-center gap-2 " +
@@ -44,8 +41,7 @@ const Admin = () => {
     "hover:bg-gray-50 hover:border-gray-300 hover:shadow-[0_2px_6px_rgba(0,0,0,0.08)] " +
     "active:translate-y-[0.5px] " +
     "transition-all duration-150 " +
-    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-2 focus-visible:ring-offset-white " +
-    "disabled:opacity-50 disabled:pointer-events-none";
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-2 focus-visible:ring-offset-white";
 
   const navBtnActive =
     "bg-gray-900 text-white border-gray-900 " +
@@ -54,6 +50,28 @@ const Admin = () => {
     "ring-1 ring-inset ring-black/10";
 
   const iconCls = "h-4 w-4";
+
+  const sectionMeta = useMemo(
+    () => ({
+      records: {
+        title: "Submitted Records",
+        subtitle: "Review SK submissions and approve monthly reporting.",
+      },
+      assignments: {
+        title: "Assign New Village",
+        subtitle: "Assign villages to users and manage coverage.",
+      },
+      users: {
+        title: "User Management",
+        subtitle: "Add, update, and manage user access.",
+      },
+      masterData: {
+        title: "Manage Master Data",
+        subtitle: "Maintain core reference lists like villages and regions.",
+      },
+    }),
+    [],
+  );
 
   const NavButton = ({
     id,
@@ -69,6 +87,7 @@ const Admin = () => {
       variant="outline"
       size="sm"
       onClick={() => setActiveSection(id)}
+      aria-current={activeSection === id ? "page" : undefined}
       className={`${navBtnBase} ${activeSection === id ? navBtnActive : ""}`}
     >
       {icon}
@@ -85,27 +104,23 @@ const Admin = () => {
     subtitle?: string;
     children: React.ReactNode;
   }) => (
-    <section className="rounded-xl border bg-white shadow-sm p-4 md:p-6">
-      <div className="flex items-start justify-between gap-4 mb-4">
-        <div>
-          <h2 className="text-base md:text-lg font-semibold text-gray-900 tracking-tight">
-            {title}
-          </h2>
-          {subtitle ? (
-            <p className="text-xs md:text-sm text-gray-500 mt-1">{subtitle}</p>
-          ) : null}
-        </div>
+    <section className="rounded-xl border bg-white shadow-sm">
+      <div className="p-4 md:p-6 border-b">
+        <h2 className="text-base md:text-lg font-semibold text-gray-900 tracking-tight">
+          {title}
+        </h2>
+        {subtitle ? (
+          <p className="text-xs md:text-sm text-gray-500 mt-1">{subtitle}</p>
+        ) : null}
       </div>
-      {children}
+      <div className="p-4 md:p-6">{children}</div>
     </section>
   );
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-white via-white to-gray-100">
-      {/* Header Section */}
       <header className="sticky top-0 z-10 border-b bg-white/85 backdrop-blur supports-[backdrop-filter]:bg-white/65 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 md:px-6 py-3 grid grid-cols-[auto,1fr,auto] items-center gap-3">
-          {/* Back Button */}
+        <div className="max-w-6xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between gap-3">
           <Button
             type="button"
             variant="ghost"
@@ -116,15 +131,13 @@ const Admin = () => {
             <ArrowLeft className="h-4 w-4 mr-2" /> Back
           </Button>
 
-          {/* Title (smaller + centered) */}
-          <h1 className="justify-self-center text-base md:text-lg font-semibold text-gray-900 tracking-tight">
+          <h1 className="text-base md:text-lg font-semibold text-gray-900 tracking-tight">
             Admin Panel
           </h1>
 
-          {/* Right navigation */}
-          <div className="justify-self-end max-w-[70vw]">
-            {/* Option A: wrap nicely (clean on desktop, fine on small) */}
-            <div className="flex flex-wrap items-center justify-end gap-2">
+          {/* Nav - wrap on desktop, scroll on very small screens */}
+          <div className="max-w-[72vw]">
+            <div className="flex flex-nowrap md:flex-wrap items-center justify-end gap-2 overflow-x-auto md:overflow-visible py-1">
               <NavButton
                 id="records"
                 label="View Records"
@@ -146,31 +159,25 @@ const Admin = () => {
                 icon={<EditIcon className={iconCls} />}
               />
             </div>
-
-            {/* If you prefer horizontal scroll on small screens instead of wrapping, replace the div above with:
-              <div className="flex flex-nowrap items-center justify-end gap-2 overflow-x-auto no-scrollbar py-1">
-                ...
-              </div>
-            */}
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="max-w-6xl mx-auto p-4 md:p-6 space-y-6">
         {activeSection === "records" && (
           <SectionCard
-            title="Submitted Records"
-            subtitle="Review records submitted by SKs."
+            title={sectionMeta.records.title}
+            subtitle={sectionMeta.records.subtitle}
           >
-            <RecordList />
+            {/* ✅ Use your new component here */}
+            <AdminRecordReview />
           </SectionCard>
         )}
 
         {activeSection === "assignments" && (
           <SectionCard
-            title="Assign New Village"
-            subtitle="Assign villages to users and manage coverage."
+            title={sectionMeta.assignments.title}
+            subtitle={sectionMeta.assignments.subtitle}
           >
             <VillageAssignment users={users} setUsers={setUsers} />
           </SectionCard>
@@ -178,8 +185,8 @@ const Admin = () => {
 
         {activeSection === "users" && (
           <SectionCard
-            title="User Management"
-            subtitle="Add, update, and manage user access."
+            title={sectionMeta.users.title}
+            subtitle={sectionMeta.users.subtitle}
           >
             <UserManagement users={users} setUsers={setUsers} />
           </SectionCard>
@@ -187,8 +194,8 @@ const Admin = () => {
 
         {activeSection === "masterData" && (
           <SectionCard
-            title="Manage Master Data"
-            subtitle="Maintain core reference lists like villages and regions."
+            title={sectionMeta.masterData.title}
+            subtitle={sectionMeta.masterData.subtitle}
           >
             <p className="text-sm text-gray-600">
               Add or update master data here (e.g., villages, regions).
