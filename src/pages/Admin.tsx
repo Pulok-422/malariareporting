@@ -44,11 +44,14 @@ const Admin = () => {
     "hover:bg-gray-50 hover:border-gray-300 hover:shadow-[0_2px_6px_rgba(0,0,0,0.08)] " +
     "active:translate-y-[0.5px] " +
     "transition-all duration-150 " +
-    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-2 focus-visible:ring-offset-white";
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-2 focus-visible:ring-offset-white " +
+    "disabled:opacity-50 disabled:pointer-events-none";
 
   const navBtnActive =
     "bg-gray-900 text-white border-gray-900 " +
-    "hover:bg-gray-900 hover:border-gray-900";
+    "hover:bg-gray-900 hover:border-gray-900 " +
+    "shadow-[0_2px_10px_rgba(0,0,0,0.14)] " +
+    "ring-1 ring-inset ring-black/10";
 
   const iconCls = "h-4 w-4";
 
@@ -73,11 +76,35 @@ const Admin = () => {
     </Button>
   );
 
+  const SectionCard = ({
+    title,
+    subtitle,
+    children,
+  }: {
+    title: string;
+    subtitle?: string;
+    children: React.ReactNode;
+  }) => (
+    <section className="rounded-xl border bg-white shadow-sm p-4 md:p-6">
+      <div className="flex items-start justify-between gap-4 mb-4">
+        <div>
+          <h2 className="text-base md:text-lg font-semibold text-gray-900 tracking-tight">
+            {title}
+          </h2>
+          {subtitle ? (
+            <p className="text-xs md:text-sm text-gray-500 mt-1">{subtitle}</p>
+          ) : null}
+        </div>
+      </div>
+      {children}
+    </section>
+  );
+
   return (
     <div className="min-h-screen bg-gradient-to-r from-white via-white to-gray-100">
       {/* Header Section */}
-      <header className="sticky top-0 z-10 border-b bg-white/85 backdrop-blur supports-[backdrop-filter]:bg-white/65">
-        <div className="px-4 md:px-6 py-3 grid grid-cols-[auto,1fr,auto] items-center gap-3">
+      <header className="sticky top-0 z-10 border-b bg-white/85 backdrop-blur supports-[backdrop-filter]:bg-white/65 shadow-sm">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 py-3 grid grid-cols-[auto,1fr,auto] items-center gap-3">
           {/* Back Button */}
           <Button
             type="button"
@@ -94,70 +121,79 @@ const Admin = () => {
             Admin Panel
           </h1>
 
-          {/* Right navigation (wraps, prevents blank/collapse) */}
-          <div className="justify-self-end flex flex-wrap items-center justify-end gap-2 max-w-[70vw]">
-            <NavButton
-              id="records"
-              label="View Records"
-              icon={<FileText className={iconCls} />}
-            />
-            <NavButton
-              id="assignments"
-              label="Assign Villages"
-              icon={<MapPin className={iconCls} />}
-            />
-            <NavButton
-              id="users"
-              label="Manage Users"
-              icon={<UserPlus className={iconCls} />}
-            />
-            <NavButton
-              id="masterData"
-              label="Master Data"
-              icon={<EditIcon className={iconCls} />}
-            />
+          {/* Right navigation */}
+          <div className="justify-self-end max-w-[70vw]">
+            {/* Option A: wrap nicely (clean on desktop, fine on small) */}
+            <div className="flex flex-wrap items-center justify-end gap-2">
+              <NavButton
+                id="records"
+                label="View Records"
+                icon={<FileText className={iconCls} />}
+              />
+              <NavButton
+                id="assignments"
+                label="Assign Villages"
+                icon={<MapPin className={iconCls} />}
+              />
+              <NavButton
+                id="users"
+                label="Manage Users"
+                icon={<UserPlus className={iconCls} />}
+              />
+              <NavButton
+                id="masterData"
+                label="Master Data"
+                icon={<EditIcon className={iconCls} />}
+              />
+            </div>
+
+            {/* If you prefer horizontal scroll on small screens instead of wrapping, replace the div above with:
+              <div className="flex flex-nowrap items-center justify-end gap-2 overflow-x-auto no-scrollbar py-1">
+                ...
+              </div>
+            */}
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="p-4 md:p-6 space-y-6">
+      <main className="max-w-6xl mx-auto p-4 md:p-6 space-y-6">
         {activeSection === "records" && (
-          <div>
-            <h2 className="text-lg font-semibold mb-3 text-gray-800">
-              Submitted Records
-            </h2>
+          <SectionCard
+            title="Submitted Records"
+            subtitle="Review records submitted by SKs."
+          >
             <RecordList />
-          </div>
+          </SectionCard>
         )}
 
         {activeSection === "assignments" && (
-          <div>
-            <h2 className="text-lg font-semibold mb-3 text-gray-800">
-              Assign New Village
-            </h2>
+          <SectionCard
+            title="Assign New Village"
+            subtitle="Assign villages to users and manage coverage."
+          >
             <VillageAssignment users={users} setUsers={setUsers} />
-          </div>
+          </SectionCard>
         )}
 
         {activeSection === "users" && (
-          <div>
-            <h2 className="text-lg font-semibold mb-3 text-gray-800">
-              User Management
-            </h2>
+          <SectionCard
+            title="User Management"
+            subtitle="Add, update, and manage user access."
+          >
             <UserManagement users={users} setUsers={setUsers} />
-          </div>
+          </SectionCard>
         )}
 
         {activeSection === "masterData" && (
-          <div>
-            <h2 className="text-lg font-semibold mb-3 text-gray-800">
-              Manage Master Data
-            </h2>
-            <p className="text-sm text-gray-500">
+          <SectionCard
+            title="Manage Master Data"
+            subtitle="Maintain core reference lists like villages and regions."
+          >
+            <p className="text-sm text-gray-600">
               Add or update master data here (e.g., villages, regions).
             </p>
-          </div>
+          </SectionCard>
         )}
       </main>
     </div>
