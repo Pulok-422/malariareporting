@@ -1,15 +1,6 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  ArrowLeft,
-  UserPlus,
-  EditIcon,
-  FileText,
-  MapPin,
-  Users,
-  Database,
-} from "lucide-react";
+import { ArrowLeft, UserPlus, EditIcon, FileText, MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -27,23 +18,8 @@ const Admin = () => {
   // Check if the user has admin role
   if (role !== "admin") {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50">
-        <div className="rounded-2xl border bg-white shadow-sm p-8 text-center">
-          <p className="text-gray-900 font-semibold">Access Denied</p>
-          <p className="mt-1 text-sm text-gray-500">
-            You don’t have permission to view this page.
-          </p>
-          <div className="mt-5">
-            <Button
-              variant="outline"
-              size="sm"
-              className="h-9 px-4 border-gray-200 bg-white hover:bg-gray-50"
-              onClick={() => navigate("/dashboard")}
-            >
-              Go to Dashboard
-            </Button>
-          </div>
-        </div>
+      <div className="flex min-h-screen items-center justify-center">
+        <p className="text-destructive text-lg">Access Denied</p>
       </div>
     );
   }
@@ -55,203 +31,171 @@ const Admin = () => {
     { id: 3, name: "SK Mizanur Rahman", email: "mizan@skmail.com", role: "sk" },
   ]);
 
-  const [tab, setTab] = useState<SectionKey>("records");
+  // Track which section is active
+  const [activeSection, setActiveSection] = useState<SectionKey>("records");
+
+  // Compact premium button styles (neutral, professional)
+  const navBtnBase =
+    "h-8 px-3 rounded-md border text-xs font-medium " +
+    "inline-flex items-center justify-center gap-2 " +
+    "whitespace-nowrap shrink-0 " +
+    "bg-white border-gray-200 text-gray-800 " +
+    "shadow-[0_1px_2px_rgba(0,0,0,0.06)] " +
+    "hover:bg-gray-50 hover:border-gray-300 hover:shadow-[0_2px_6px_rgba(0,0,0,0.08)] " +
+    "active:translate-y-[0.5px] " +
+    "transition-all duration-150 " +
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-2 focus-visible:ring-offset-white " +
+    "disabled:opacity-50 disabled:pointer-events-none";
+
+  const navBtnActive =
+    "bg-gray-900 text-white border-gray-900 " +
+    "hover:bg-gray-900 hover:border-gray-900 " +
+    "shadow-[0_2px_10px_rgba(0,0,0,0.14)] " +
+    "ring-1 ring-inset ring-black/10";
+
+  const iconCls = "h-4 w-4";
+
+  const NavButton = ({
+    id,
+    label,
+    icon,
+  }: {
+    id: SectionKey;
+    label: string;
+    icon: React.ReactNode;
+  }) => (
+    <Button
+      type="button"
+      variant="outline"
+      size="sm"
+      onClick={() => setActiveSection(id)}
+      className={`${navBtnBase} ${activeSection === id ? navBtnActive : ""}`}
+    >
+      {icon}
+      <span className="leading-none">{label}</span>
+    </Button>
+  );
 
   const SectionCard = ({
     title,
     subtitle,
-    actions,
     children,
   }: {
     title: string;
     subtitle?: string;
-    actions?: React.ReactNode;
     children: React.ReactNode;
   }) => (
-    <section className="rounded-2xl border bg-white shadow-sm">
-      <div className="px-4 md:px-6 py-4 border-b bg-white/70 rounded-t-2xl">
-        <div className="flex items-start justify-between gap-4">
-          <div className="min-w-0">
-            <h2 className="text-base md:text-lg font-semibold text-gray-900 tracking-tight">
-              {title}
-            </h2>
-            {subtitle ? (
-              <p className="text-xs md:text-sm text-gray-500 mt-1">
-                {subtitle}
-              </p>
-            ) : null}
-          </div>
-
-          {actions ? (
-            <div className="shrink-0 flex items-center gap-2">{actions}</div>
+    <section className="rounded-xl border bg-white shadow-sm p-4 md:p-6">
+      <div className="flex items-start justify-between gap-4 mb-4">
+        <div>
+          <h2 className="text-base md:text-lg font-semibold text-gray-900 tracking-tight">
+            {title}
+          </h2>
+          {subtitle ? (
+            <p className="text-xs md:text-sm text-gray-500 mt-1">{subtitle}</p>
           ) : null}
         </div>
       </div>
-
-      <div className="p-4 md:p-6">{children}</div>
+      {children}
     </section>
   );
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      {/* Header */}
-      <header className="sticky top-0 z-10 border-b bg-white/85 backdrop-blur supports-[backdrop-filter]:bg-white/70 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
+    <div className="min-h-screen bg-gradient-to-r from-white via-white to-gray-100">
+      {/* Header Section */}
+      <header className="sticky top-0 z-10 border-b bg-white/85 backdrop-blur supports-[backdrop-filter]:bg-white/65 shadow-sm">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 py-3 grid grid-cols-[auto,1fr,auto] items-center gap-3">
+          {/* Back Button */}
           <Button
             type="button"
             variant="ghost"
             size="sm"
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate("/")}
             className="h-8 px-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 transition"
           >
             <ArrowLeft className="h-4 w-4 mr-2" /> Back
           </Button>
 
-          <h1 className="text-base md:text-lg font-semibold tracking-tight text-gray-900">
+          {/* Title (smaller + centered) */}
+          <h1 className="justify-self-center text-base md:text-lg font-semibold text-gray-900 tracking-tight">
             Admin Panel
           </h1>
 
-          <div className="w-[72px]" />
-        </div>
-
-        {/* Tabs Navigation (consistent with Dashboard, more friendly) */}
-        <div className="max-w-6xl mx-auto px-4 md:px-6 pb-3">
-          <Tabs value={tab} onValueChange={(v) => setTab(v as SectionKey)}>
-            <TabsList className="w-fit rounded-lg bg-gray-100 p-1">
-              <TabsTrigger
-                value="records"
-                className="gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm"
-              >
-                <FileText className="h-4 w-4" />
-                Records
-              </TabsTrigger>
-
-              <TabsTrigger
-                value="assignments"
-                className="gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm"
-              >
-                <MapPin className="h-4 w-4" />
-                Assignments
-              </TabsTrigger>
-
-              <TabsTrigger
-                value="users"
-                className="gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm"
-              >
-                <Users className="h-4 w-4" />
-                Users
-              </TabsTrigger>
-
-              <TabsTrigger
-                value="masterData"
-                className="gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm"
-              >
-                <Database className="h-4 w-4" />
-                Master Data
-              </TabsTrigger>
-            </TabsList>
-
-            {/* Main Content */}
-            <div className="max-w-6xl mx-auto pt-3">
-              <TabsContent value="records" className="m-0">
-                <SectionCard
-                  title="Submitted Records"
-                  subtitle="Review records submitted by SKs."
-                  actions={
-                    <>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        className="h-8 px-3 text-xs border-gray-200 bg-white hover:bg-gray-50"
-                        onClick={() => window.location.reload()}
-                      >
-                        Refresh
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        className="h-8 px-3 text-xs border-gray-200 bg-white hover:bg-gray-50"
-                        onClick={() => alert("Export coming soon.")}
-                      >
-                        Export
-                      </Button>
-                    </>
-                  }
-                >
-                  <RecordList />
-                </SectionCard>
-              </TabsContent>
-
-              <TabsContent value="assignments" className="m-0">
-                <SectionCard
-                  title="Assign New Village"
-                  subtitle="Assign villages to users and manage coverage."
-                  actions={
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      className="h-8 px-3 text-xs border-gray-200 bg-white hover:bg-gray-50"
-                      onClick={() => alert("Bulk assign coming soon.")}
-                    >
-                      Bulk Assign
-                    </Button>
-                  }
-                >
-                  <VillageAssignment users={users} setUsers={setUsers} />
-                </SectionCard>
-              </TabsContent>
-
-              <TabsContent value="users" className="m-0">
-                <SectionCard
-                  title="User Management"
-                  subtitle="Add, update, and manage user access."
-                  actions={
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      className="h-8 px-3 text-xs border-gray-200 bg-white hover:bg-gray-50"
-                      onClick={() => alert("Add user coming soon.")}
-                    >
-                      Add User
-                    </Button>
-                  }
-                >
-                  <UserManagement users={users} setUsers={setUsers} />
-                </SectionCard>
-              </TabsContent>
-
-              <TabsContent value="masterData" className="m-0">
-                <SectionCard
-                  title="Manage Master Data"
-                  subtitle="Maintain core reference lists like villages and regions."
-                  actions={
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      className="h-8 px-3 text-xs border-gray-200 bg-white hover:bg-gray-50"
-                      onClick={() => alert("Add item coming soon.")}
-                    >
-                      Add Item
-                    </Button>
-                  }
-                >
-                  <p className="text-sm text-gray-600">
-                    Add or update master data here (e.g., villages, regions).
-                  </p>
-                </SectionCard>
-              </TabsContent>
+          {/* Right navigation */}
+          <div className="justify-self-end max-w-[70vw]">
+            {/* Option A: wrap nicely (clean on desktop, fine on small) */}
+            <div className="flex flex-wrap items-center justify-end gap-2">
+              <NavButton
+                id="records"
+                label="View Records"
+                icon={<FileText className={iconCls} />}
+              />
+              <NavButton
+                id="assignments"
+                label="Assign Villages"
+                icon={<MapPin className={iconCls} />}
+              />
+              <NavButton
+                id="users"
+                label="Manage Users"
+                icon={<UserPlus className={iconCls} />}
+              />
+              <NavButton
+                id="masterData"
+                label="Master Data"
+                icon={<EditIcon className={iconCls} />}
+              />
             </div>
-          </Tabs>
+
+            {/* If you prefer horizontal scroll on small screens instead of wrapping, replace the div above with:
+              <div className="flex flex-nowrap items-center justify-end gap-2 overflow-x-auto no-scrollbar py-1">
+                ...
+              </div>
+            */}
+          </div>
         </div>
       </header>
 
-      {/* Page spacing */}
-      <div className="flex-1" />
+      {/* Main Content */}
+      <main className="max-w-6xl mx-auto p-4 md:p-6 space-y-6">
+        {activeSection === "records" && (
+          <SectionCard
+            title="Submitted Records"
+            subtitle="Review records submitted by SKs."
+          >
+            <RecordList />
+          </SectionCard>
+        )}
+
+        {activeSection === "assignments" && (
+          <SectionCard
+            title="Assign New Village"
+            subtitle="Assign villages to users and manage coverage."
+          >
+            <VillageAssignment users={users} setUsers={setUsers} />
+          </SectionCard>
+        )}
+
+        {activeSection === "users" && (
+          <SectionCard
+            title="User Management"
+            subtitle="Add, update, and manage user access."
+          >
+            <UserManagement users={users} setUsers={setUsers} />
+          </SectionCard>
+        )}
+
+        {activeSection === "masterData" && (
+          <SectionCard
+            title="Manage Master Data"
+            subtitle="Maintain core reference lists like villages and regions."
+          >
+            <p className="text-sm text-gray-600">
+              Add or update master data here (e.g., villages, regions).
+            </p>
+          </SectionCard>
+        )}
+      </main>
     </div>
   );
 };
