@@ -1,6 +1,6 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, UserPlus, EditIcon, FileText } from "lucide-react";
+import { ArrowLeft, UserPlus, EditIcon, FileText, MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -8,6 +8,8 @@ import { useState } from "react";
 import UserManagement from "@/components/UserManagement";
 import VillageAssignment from "@/components/VillageAssignment";
 import RecordList from "@/components/RecordList";
+
+type SectionKey = "records" | "assignments" | "users" | "masterData";
 
 const Admin = () => {
   const { role } = useAuth();
@@ -30,126 +32,126 @@ const Admin = () => {
   ]);
 
   // Track which section is active
-  const [activeSection, setActiveSection] = useState<string>("records");
+  const [activeSection, setActiveSection] = useState<SectionKey>("records");
 
-  // Premium button styles (neutral, not colorful)
+  // Compact premium button styles (neutral, professional)
   const navBtnBase =
-    "h-9 px-3 rounded-md border text-sm font-medium " +
-    "bg-white/70 backdrop-blur supports-[backdrop-filter]:bg-white/60 " +
-    "border-gray-200 text-gray-800 " +
-    "shadow-sm hover:shadow-md " +
-    "hover:bg-white hover:border-gray-300 " +
+    "h-8 px-3 rounded-md border text-xs font-medium " +
+    "inline-flex items-center justify-center gap-2 " +
+    "whitespace-nowrap shrink-0 " +
+    "bg-white border-gray-200 text-gray-800 " +
+    "shadow-[0_1px_2px_rgba(0,0,0,0.06)] " +
+    "hover:bg-gray-50 hover:border-gray-300 hover:shadow-[0_2px_6px_rgba(0,0,0,0.08)] " +
     "active:translate-y-[0.5px] " +
-    "transition-all duration-200 " +
-    "focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-2 focus-visible:ring-offset-white";
+    "transition-all duration-150 " +
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-2 focus-visible:ring-offset-white";
 
   const navBtnActive =
-    "bg-gray-900 text-white border-gray-900 shadow-md hover:bg-gray-900 hover:border-gray-900";
+    "bg-gray-900 text-white border-gray-900 " +
+    "hover:bg-gray-900 hover:border-gray-900";
 
-  const iconBase = "h-4 w-4 mr-2";
+  const iconCls = "h-4 w-4";
+
+  const NavButton = ({
+    id,
+    label,
+    icon,
+  }: {
+    id: SectionKey;
+    label: string;
+    icon: React.ReactNode;
+  }) => (
+    <Button
+      type="button"
+      variant="outline"
+      size="sm"
+      onClick={() => setActiveSection(id)}
+      className={`${navBtnBase} ${activeSection === id ? navBtnActive : ""}`}
+    >
+      {icon}
+      <span className="leading-none">{label}</span>
+    </Button>
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-white via-white to-gray-100">
       {/* Header Section */}
-      <header className="sticky top-0 z-10 border-b bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 px-6 py-4 flex items-center justify-between">
-        {/* Back Button */}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => navigate("/")}
-          className="h-9 px-3 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 transition"
-        >
-          <ArrowLeft className={iconBase} /> Back
-        </Button>
-
-        <h1 className="text-xl md:text-2xl font-semibold text-gray-900 tracking-tight">
-          Admin Panel
-        </h1>
-
-        <div className="flex items-center gap-2 md:gap-3">
-          {/* Admin Section Navigation */}
+      <header className="sticky top-0 z-10 border-b bg-white/85 backdrop-blur supports-[backdrop-filter]:bg-white/65">
+        <div className="px-4 md:px-6 py-3 grid grid-cols-[auto,1fr,auto] items-center gap-3">
+          {/* Back Button */}
           <Button
-            variant="outline"
+            type="button"
+            variant="ghost"
             size="sm"
-            onClick={() => setActiveSection("records")}
-            className={`${navBtnBase} ${
-              activeSection === "records" ? navBtnActive : ""
-            }`}
+            onClick={() => navigate("/")}
+            className="h-8 px-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 transition"
           >
-            <FileText className={iconBase} /> View Records
+            <ArrowLeft className="h-4 w-4 mr-2" /> Back
           </Button>
 
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setActiveSection("assignments")}
-            className={`${navBtnBase} ${
-              activeSection === "assignments" ? navBtnActive : ""
-            }`}
-          >
-            <FileText className={iconBase} /> Assign Villages
-          </Button>
+          {/* Title (smaller + centered) */}
+          <h1 className="justify-self-center text-base md:text-lg font-semibold text-gray-900 tracking-tight">
+            Admin Panel
+          </h1>
 
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setActiveSection("users")}
-            className={`${navBtnBase} ${
-              activeSection === "users" ? navBtnActive : ""
-            }`}
-          >
-            <UserPlus className={iconBase} /> Manage Users
-          </Button>
-
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setActiveSection("masterData")}
-            className={`${navBtnBase} ${
-              activeSection === "masterData" ? navBtnActive : ""
-            }`}
-          >
-            <EditIcon className={iconBase} /> Master Data
-          </Button>
+          {/* Right navigation (wraps, prevents blank/collapse) */}
+          <div className="justify-self-end flex flex-wrap items-center justify-end gap-2 max-w-[70vw]">
+            <NavButton
+              id="records"
+              label="View Records"
+              icon={<FileText className={iconCls} />}
+            />
+            <NavButton
+              id="assignments"
+              label="Assign Villages"
+              icon={<MapPin className={iconCls} />}
+            />
+            <NavButton
+              id="users"
+              label="Manage Users"
+              icon={<UserPlus className={iconCls} />}
+            />
+            <NavButton
+              id="masterData"
+              label="Master Data"
+              icon={<EditIcon className={iconCls} />}
+            />
+          </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="p-6 space-y-8">
-        {/* View Submitted Records Section */}
+      <main className="p-4 md:p-6 space-y-6">
         {activeSection === "records" && (
           <div>
-            <h2 className="text-xl font-medium mb-4 text-gray-800">
+            <h2 className="text-lg font-semibold mb-3 text-gray-800">
               Submitted Records
             </h2>
             <RecordList />
           </div>
         )}
 
-        {/* Assign New Village Section */}
         {activeSection === "assignments" && (
           <div>
-            <h2 className="text-xl font-medium mb-4 text-gray-800">
+            <h2 className="text-lg font-semibold mb-3 text-gray-800">
               Assign New Village
             </h2>
             <VillageAssignment users={users} setUsers={setUsers} />
           </div>
         )}
 
-        {/* User Management Section */}
         {activeSection === "users" && (
           <div>
-            <h2 className="text-xl font-medium mb-4 text-gray-800">
+            <h2 className="text-lg font-semibold mb-3 text-gray-800">
               User Management
             </h2>
             <UserManagement users={users} setUsers={setUsers} />
           </div>
         )}
 
-        {/* Master Data Section */}
         {activeSection === "masterData" && (
           <div>
-            <h2 className="text-xl font-medium mb-4 text-gray-800">
+            <h2 className="text-lg font-semibold mb-3 text-gray-800">
               Manage Master Data
             </h2>
             <p className="text-sm text-gray-500">
